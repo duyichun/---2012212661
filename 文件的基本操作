@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-  
+#---------------------------------------  
+#   程序：文件的基本操作
+#   版本：0.1  
+#   作者：pure  
+#   日期：2013-12-14  
+#   语言：Python 2.7  
+#   操作：读入要写入的文件，并将文字写入文件
+#   功能：实现文件的写入、读取及删除 
+#---------------------------------------
+#将文字写入文件
+#open()采用w模式，也就是写(write)模式。在这种模式下，文件原有的内容将会被删除。
+file = raw_input("please input a file to write(eg. 123.txt): ")
+testFile = open(file,'w')
+if testFile:
+    pass
+else:
+    print "Cannot open the file!"
+phrase = raw_input("please input the words you want to say : ")#输入字符串
+str = ('hello',' ',file)
+testFile.write(phrase+'\n')#将字符串和空格写入文件
+testFile.close()
+
+#在open的时候制定'a'，即为（append）模式。在这种模式下，文件的原有内容不会消失，新写入的内容会自动被添加到文件的末尾。
+testFile = open(file,'a')
+words = raw_input("please input the words you want to add : ")#输入字符串
+str=('hello',' ',words)
+testFile.writelines(str)#writelines()用于将大量的字符串写入文件，效率高,且输出后换行；而write()输出后不换行
+testFile.writelines('\n')
+testFile.close()
+
+#读文件内容
+#在open的时候制定'r'，即为读取(read)模式
+testFile = open('123.txt','r')
+#testStr = testFile.readline()#read(),readlines()一次读取整个文件，而readline()一次只读取一行，较慢，仅当内存不够读取整个文件时用readline（）
+#print testStr
+#testStr = testFile.read()
+#print testStr
+result = list()#可用于复制文件
+for line in '123.txt':
+    line = testFile.readline()
+    print line
+    result.append(line)
+print result
+testFile.close()
+
+
+
+    
+
