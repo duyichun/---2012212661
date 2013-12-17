@@ -1,0 +1,122 @@
+程序一：文件的基本操作
+
+问题：仅能写入一行字符
+解决方法：当文件打开方式为a时，通过加入循环
+while 1:
+    phrase = raw_input()#输入字符串
+    go_on = raw_input("continue?please input no or yes")#可输入多行字符
+    if go_on =="yes":
+        pass
+    elif go_on =="no":
+        break
+完成了多行字符的输入
+
+收获：
+1.文件的打开
+Python的open方法用来打开一个文件。第一个参数是文件的位置和文件名，第二个参数是读写模式。
+读写方式如下：
+rU 或 Ua 以读方式打开, 同时提供通用换行符支持 (PEP 278)
+w       以写方式打开   (必要时清空)
+a       以追加模式打开 (从 EOF 开始, 必要时创建新文件)
+r       以读写模式打开
+w       以读写模式打开 
+a       以读写模式打开 
+rb      以二进制读模式打开
+wb      以二进制写模式打开 
+ab      以二进制追加模式打开 
+rb      以二进制读写模式打开 
+wb      以二进制读写模式打开 
+ab      以二进制读写模式打开 
+
+2.文件的读写方法：
+读：
+文件对象提供了三个“读”方法：.read()、.readline() 和 .readlines()。每种方法可以接受一个变量以限制每次读取的数据量，但它们通常不使用变量。 .read() 每次读取整个文件，它通常用于将文件内容放到一个字符串变量中。然而 .read() 生成文件内容最直接的字符串表示，但对于连续的面向行的处理，它却是不必要的，并且如果文件大于可用内存，则不可能实现这种处理。
+.readline() 和 .readlines() 非常相似。
+
+示例
+fh = open( 'c:\\autoexec.bat')        
+for line in fh.readlines():                    
+	 print   line.readline() 
+.readline() 和 .readlines()之间的差异是后者一次读取整个文件，像 .read()一样。.readlines()自动将文件内容分析成一个行的列表，该列表可以由 Python 的 for... in ... 结构进行处理。另一方面，.readline()每次只读取一行，通常比 .readlines()慢得多。仅当没有足够内存可以一次读取整个文件时，才应该使用.readline()。   
+
+
+3.文件的写入
+和文件的读取一样，文件的写入也有多种方法，write（）和writelines（）方法。
+write（）方法用于将字符串写入文件，如果要写入文件的字符串不多，使用write（）方法即可，而writelines（）用于将列表中存储的字符串写入到文件中，用于将大量的字符串写入到文件中，以提高效率。
+writeline()是输出后换行，下次写会在下一行写。write()是输出后光标在行末不会换行，下次写会接着这行写
+例如：
+myfile = ("hello.txt", "aw+")
+temp = ["hello world!\n"]
+myfile.writelines(temp)    #writelines（）的使用
+
+strin ="hello!"
+myfile.write(strin)        #write（）的使用
+myfile.close()
+
+
+4.文件的删除
+文件的删除需要使用到os模块和os.path模块。os提供了对系统环境，文件，目录等操作系统级的接口函数。
+文件的删除使用remove（）函数。
+演示如下：
+myfile = ("myfile.txt", "w+")
+if os.path.exists("myfile.txt"):     #判断文件是否存在，注意后面的冒号
+os.remove("myfile.txt")
+
+由于对仅仅读写文件不很满意，改进版程序二用open方法采集网页信息
+
+程序二：爬虫百度贴吧
+
+问题：1.采集网页时未写明文件类型，用txt打开时出现乱码
+      2.网页不能直接复制，要读取网页并将其写入html文件中
+解决方法：文件名后要+'.html'      
+     
+
+收获：
+学到了string模块的用法
+1.string.capitalize(s)返回字符串s的一个副本，这个副本的第一个字符大写。
+>>> s="hello world"
+>>> string.capitalize(s)
+'Hello world'
+2.string.capwords(s)每个单词的首字母大写。
+>>> string.capwords(s)
+'Hello World'
+3.string.center(s,width[,fillchar])函数，用指定的宽度来返回一个居中版的s，如果需要的话，就用fillchar进行填充，默认是空格。但是不会对s进行截取。即如果s的长度比width大，也不会对s进行截取。
+>>> string.center(s,20,'*')
+'****hello world*****'
+string.zfill(s,width)与center类似，不过填充使用"0"来替代。
+>>> string.zfill(s,20)
+'000000  hello world '
+4.string.find(s,sub[,start[,end]])返回在s[start:end]范围内子串sub在字符串s当中出现的最小下标，没有找到返回-1
+string.index(s,sub[,start[,end]])与string.find方法类似，只不过当没有找到子串sub的时候，会抛出ValueError异常
+
+第二个程序仍比较简单，第三个程序从网上摘得，可以将百度贴吧上楼主发布的信息以txt的形式打包下载
+
+程序三：爬虫百度贴吧增进版
+
+问题：程序的解读确实花了不少时间，从网上搜了很多资料终于把程序读通了，收获很大。
+
+收获：用到了类和正则匹配
+正则：
+re.match(pattern, string, flags)
+第一个参数是正则表达式，这里为"(\w+)\s"，如果匹配成功，则返回一个Match，否则返回一个None；
+第二个参数表示要匹配的字符串；
+第三个参数是标致位，用于控制正则表达式的匹配方式，如：是否区分大小写，多行匹配等等。
+re.search(pattern, string, flags)
+re.search函数会在字符串内查找模式匹配,只到找到第一个匹配然后返回，如果字符串没有匹配，则返回None。
+re.match与re.search的区别：re.match只匹配字符串的开始，如果字符串开始不符合正则表达式，则匹配失败，函数返回None；而re.search匹配整个字符串，直到找到一个匹配。
+re.sub(pattern, repl, string, count)
+re.sub用于替换字符串中的匹配项。下面一个例子将字符串中的空格 ' ' 替换成 '-' : 
+import re
+text = "JGood is a handsome boy, he is cool, clever, and so on..."
+print re.sub(r'\s+', '-', text) 
+re.split
+可以使用re.split来分割字符串，如：re.split(r'\s+', text)；将字符串按空格分割成一个单词列表。
+re.findall
+re.findall可以获取字符串中所有匹配的字符串。如：re.findall(r'\w*oo\w*', text)；获取字符串中，包含'oo'的所有单词。
+re.compile
+可以把正则表达式编译成一个正则表达式对象。可以把那些经常使用的正则表达式编译成正则表达式对象，这样可以提高一定的效率。 
+类用关键词class定义，通常以大写字母开始，而函数和变量的名称以小写字母开始。
+所有对象的方法第一个参数叫self。
+
+总结：当然，最重要的是，学会了github的用法！
+因为python刚刚入门，需要很强的自学能力，虽然用了一天的时间才完成，但确实收获颇丰。
